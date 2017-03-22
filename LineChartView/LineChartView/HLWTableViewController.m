@@ -72,7 +72,31 @@ static NSString *cellIdentifier = @"UITableView";
         
         vc.dataPoints = points;
         
-    } else if (0 == indexPath.row) {
+    } else if (1 == indexPath.row) {
+        
+        NSMutableArray *points = [NSMutableArray array];
+        [points addObject:@{@"x" : @150, @"y" : @20}];
+        [points addObject:@{@"x" : @210, @"y" : @80}];
+        [points addObject:@{@"x" : @210, @"y" : @130}];
+        [points addObject:@{@"x" : @190, @"y" : @150}];
+        [points addObject:@{@"x" : @170, @"y" : @150}];
+        
+        [points addObject:@{@"x" : @150, @"y" : @120}];
+        
+        [points addObject:@{@"x" : @130, @"y" : @150}];
+        [points addObject:@{@"x" : @110, @"y" : @150}];
+        [points addObject:@{@"x" : @90, @"y" : @130}];
+        [points addObject:@{@"x" : @90, @"y" : @80}];
+        [points addObject:@{@"x" : @150, @"y" : @20}];
+
+
+
+//        [points addObject:@{@"x" : @120, @"y" : @120}];
+//        [points addObject:@{@"x" : @200, @"y" : @120}];
+        vc.hideNodes = YES;
+
+        vc.dataPoints = points;
+        vc.lineColor = [UIColor redColor];
     }
     
     [self.navigationController pushViewController:vc animated:YES];

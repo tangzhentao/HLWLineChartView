@@ -34,6 +34,28 @@
     }
 }
 
+-(void)setLineColor:(UIColor *)lineColor
+{
+    if (_lineColor != lineColor) {
+        _lineColor = lineColor;
+        self.lineChartView.lineColor = _lineColor;
+    }
+}
+
+-(void)setNodeColor:(UIColor *)nodeColor
+{
+    if (_nodeColor != nodeColor) {
+        _nodeColor = nodeColor;
+        self.lineChartView.nodeColor = _nodeColor;
+    }
+}
+
+-(void)setHideNodes:(BOOL)hideNodes
+{
+    _hideNodes = hideNodes;
+    self.lineChartView.hideNodes = _hideNodes;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.

@@ -14,6 +14,14 @@
 @property (assign, nonatomic) CGFloat xUnit; // x轴每刻度的点数, 默认为100
 @property (assign, nonatomic) CGFloat yUnit; // y轴每刻度的点数, 默认为100
 
+@property (strong, nonatomic) UIColor *lineColor; // 线的颜色
+@property (strong, nonatomic) UIColor *nodeColor; // 节点的颜色
+
+@property (assign, nonatomic) CGFloat lineWidth; // 线宽, 默认为2
+@property (assign, nonatomic) CGFloat nodeRadius; // 节点半径, 默认为2
+
+
+
 /*数据点 结构如下：
  * @[
  *  @{@"x" : @10, @"y" : @10},
@@ -21,6 +29,8 @@
  * ]
  */
 @property (strong, nonatomic) NSMutableArray *dataPoints;
+
+@property (assign, nonatomic) BOOL hideNodes;
 
 - (void)draw;
 

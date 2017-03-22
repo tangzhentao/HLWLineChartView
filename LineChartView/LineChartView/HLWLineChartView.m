@@ -38,6 +38,12 @@
 
 - (void)commonInit
 {
+    _lineWidth = 2;
+    _nodeRadius = 2;
+    
+    _lineColor = [UIColor greenColor];
+    _nodeColor = [UIColor redColor];
+
 }
 
 -(CGPoint)chartOrigin
@@ -80,7 +86,12 @@
 
 - (void)draw
 {
-    [self drawNodes];
+
+    if (_hideNodes) {
+        [self drawLines];
+    } else {
+        [self drawNodes];
+    }
 }
 
 - (void)drawNodes
@@ -95,7 +106,7 @@
         CGPoint point = CGPointMake([pointInfo[@"x"] floatValue] + self.chartOrigin.x, [pointInfo[@"y"] floatValue] + self.chartOrigin.y);
 //        CGPoint point = CGPointMake([pointInfo[@"x"] floatValue], [pointInfo[@"y"] floatValue]);
 
-        UIBezierPath * path = [UIBezierPath bezierPathWithArcCenter:point radius:2 startAngle:0 endAngle:M_PI * 2 clockwise:YES];
+        UIBezierPath * path = [UIBezierPath bezierPathWithArcCenter:point radius:_nodeRadius startAngle:0 endAngle:M_PI * 2 clockwise:YES];
         [linePath appendPath:path];
         
     }
@@ -105,7 +116,7 @@
     _nodesLayer.affineTransform = CGAffineTransformTranslate(t, 0, -CGRectGetHeight(self.frame));
     _nodesLayer.path = linePath.CGPath;
     // 线的颜色
-    _nodesLayer.strokeColor = [UIColor orangeColor].CGColor;
+    _nodesLayer.strokeColor = _nodeColor.CGColor;
     _nodesLayer.fillColor = [[UIColor clearColor] CGColor];
     _nodesLayer.lineCap = kCALineCapRound;
     _nodesLayer.lineJoin = kCALineJoinRound;
@@ -115,7 +126,7 @@
     //直接添加导视图上
     [self.layer addSublayer: _nodesLayer];
     
-    _nodesLayer.lineWidth = 4;
+    _nodesLayer.lineWidth = 2 * _nodeRadius;
     CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
     pathAnimation.duration = 2.0;
     pathAnimation.repeatCount = 1;
@@ -134,7 +145,7 @@
     NSUInteger numPoints = self.dataPoints.count;
     for (int i = 0; i < numPoints; i++) {
         NSDictionary *pointInfo = self.dataPoints[i];
-        CGPoint point = CGPointMake([pointInfo[@"x"] floatValue] + _chartOrigin.x, [pointInfo[@"y"] floatValue] + _chartOrigin.y);
+        CGPoint point = CGPointMake([pointInfo[@"x"] floatValue] + self.chartOrigin.x, [pointInfo[@"y"] floatValue] + self.chartOrigin.y);
         // 起点
         if (0 == i) {
             [linePath moveToPoint:point];
@@ -148,14 +159,14 @@
     _linesLayer.affineTransform = CGAffineTransformTranslate(t, 0, -CGRectGetHeight(self.frame));
     _linesLayer.path = linePath.CGPath;
     //线的颜色
-    _linesLayer.strokeColor = [UIColor greenColor].CGColor;
+    _linesLayer.strokeColor = _lineColor.CGColor;
     _linesLayer.fillColor = [[UIColor clearColor] CGColor];
     _linesLayer.lineCap = kCALineCapRound;
     _linesLayer.lineJoin = kCALineJoinRound;
     
     [self.layer addSublayer: _linesLayer];//直接添加导视图上
     
-    _linesLayer.lineWidth = 2;
+    _linesLayer.lineWidth = _lineWidth;
     CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
     pathAnimation.duration = 2.0;
     pathAnimation.repeatCount = 1;
