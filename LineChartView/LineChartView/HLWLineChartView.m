@@ -8,11 +8,19 @@
 
 #import "HLWLineChartView.h"
 
-@interface HLWLineChartView ()
+@interface HLWLineChartView () <CAAnimationDelegate>
+{
+    CGPoint _chartOrigin; // 图表原点在视图中的位置，默认为[40, 40]
+}
 
 @property (assign, nonatomic) CGPoint xAxisEnd; // x轴终点
 @property (assign, nonatomic) CGPoint yAxisEnd; // y轴终点
 @property (assign, nonatomic) CGFloat scaleLineLength; // 刻度线长度，默认为10
+
+@property (strong, nonatomic) CAShapeLayer *nodesLayer; //
+@property (strong, nonatomic) CAShapeLayer *linesLayer; //
+
+
 
 @end
 
@@ -30,7 +38,6 @@
 
 - (void)commonInit
 {
-    
 }
 
 -(CGPoint)chartOrigin
@@ -40,6 +47,11 @@
     }
     
     return _chartOrigin;
+}
+
+- (void)setChartOrigin:(CGPoint)chartOrigin
+{
+    _chartOrigin = chartOrigin;
 }
 
 -(CGPoint)xAxisEnd
@@ -60,10 +72,15 @@
     return _yAxisEnd;
 }
 
-- (void)strokePoints
+#pragma mark - ---------- 
+- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
+{
+    [self drawLines];
+}
+
+- (void)draw
 {
     [self drawNodes];
-    [self drawLines];
 }
 
 - (void)drawNodes
@@ -75,26 +92,30 @@
     // 根据点集画节点
     for (int i = 1; i < numPoints; i++) {
         NSDictionary *pointInfo = self.dataPoints[i];
-        CGPoint point = CGPointMake([pointInfo[@"x"] floatValue], [pointInfo[@"y"] floatValue]);
-        
-        UIBezierPath * path = [UIBezierPath bezierPathWithArcCenter:point radius:3 startAngle:0 endAngle:M_PI * 2 clockwise:YES];
+        CGPoint point = CGPointMake([pointInfo[@"x"] floatValue] + self.chartOrigin.x, [pointInfo[@"y"] floatValue] + self.chartOrigin.y);
+//        CGPoint point = CGPointMake([pointInfo[@"x"] floatValue], [pointInfo[@"y"] floatValue]);
+
+        UIBezierPath * path = [UIBezierPath bezierPathWithArcCenter:point radius:2 startAngle:0 endAngle:M_PI * 2 clockwise:YES];
         [linePath appendPath:path];
         
     }
     
-    CAShapeLayer *layer = [CAShapeLayer layer];
+    _nodesLayer = [CAShapeLayer layer];
     CGAffineTransform t = CGAffineTransformMakeScale(1, -1);
-    layer.affineTransform = CGAffineTransformTranslate(t, 0, -CGRectGetHeight(self.frame));
-    layer.path = linePath.CGPath;
-    //线的颜色
-    layer.strokeColor = [UIColor orangeColor].CGColor;
-    layer.fillColor = [[UIColor clearColor] CGColor];
-    layer.lineCap = kCALineCapRound;
-    layer.lineJoin = kCALineJoinRound;
+    _nodesLayer.affineTransform = CGAffineTransformTranslate(t, 0, -CGRectGetHeight(self.frame));
+    _nodesLayer.path = linePath.CGPath;
+    // 线的颜色
+    _nodesLayer.strokeColor = [UIColor orangeColor].CGColor;
+    _nodesLayer.fillColor = [[UIColor clearColor] CGColor];
+    _nodesLayer.lineCap = kCALineCapRound;
+    _nodesLayer.lineJoin = kCALineJoinRound;
+    // 节点的图层显示在线段图层的上面
+    _nodesLayer.zPosition = 1;
+
+    //直接添加导视图上
+    [self.layer addSublayer: _nodesLayer];
     
-    [self.layer addSublayer: layer];//直接添加导视图上
-    
-    layer.lineWidth = 2;
+    _nodesLayer.lineWidth = 4;
     CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
     pathAnimation.duration = 4.0;
     pathAnimation.repeatCount = 1;
@@ -102,8 +123,8 @@
     pathAnimation.fromValue = [NSNumber numberWithFloat:0.0f];
     pathAnimation.toValue = [NSNumber numberWithFloat:1.0f];
     // 设置动画代理，动画结束时添加一个标签，显示折线终点的信息
-    //    pathAnimation.delegate = self;
-    [layer addAnimation:pathAnimation forKey:@"strokeEnd"];
+    pathAnimation.delegate = self;
+    [_nodesLayer addAnimation:pathAnimation forKey:@"strokeEnd"];
 }
 
 - (void)drawLines
@@ -113,7 +134,7 @@
     NSUInteger numPoints = self.dataPoints.count;
     for (int i = 0; i < numPoints; i++) {
         NSDictionary *pointInfo = self.dataPoints[i];
-        CGPoint point = CGPointMake([pointInfo[@"x"] floatValue], [pointInfo[@"y"] floatValue]);
+        CGPoint point = CGPointMake([pointInfo[@"x"] floatValue] + _chartOrigin.x, [pointInfo[@"y"] floatValue] + _chartOrigin.y);
         // 起点
         if (0 == i) {
             [linePath moveToPoint:point];
@@ -122,19 +143,19 @@
         }
     }
     
-    CAShapeLayer *layer = [CAShapeLayer layer];
+    _linesLayer = [CAShapeLayer layer];
     CGAffineTransform t = CGAffineTransformMakeScale(1, -1);
-    layer.affineTransform = CGAffineTransformTranslate(t, 0, -CGRectGetHeight(self.frame));
-    layer.path = linePath.CGPath;
+    _linesLayer.affineTransform = CGAffineTransformTranslate(t, 0, -CGRectGetHeight(self.frame));
+    _linesLayer.path = linePath.CGPath;
     //线的颜色
-    layer.strokeColor = [UIColor greenColor].CGColor;
-    layer.fillColor = [[UIColor clearColor] CGColor];
-    layer.lineCap = kCALineCapRound;
-    layer.lineJoin = kCALineJoinRound;
+    _linesLayer.strokeColor = [UIColor greenColor].CGColor;
+    _linesLayer.fillColor = [[UIColor clearColor] CGColor];
+    _linesLayer.lineCap = kCALineCapRound;
+    _linesLayer.lineJoin = kCALineJoinRound;
     
-    [self.layer addSublayer: layer];//直接添加导视图上
+    [self.layer addSublayer: _linesLayer];//直接添加导视图上
     
-    layer.lineWidth = 2;
+    _linesLayer.lineWidth = 2;
     CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
     pathAnimation.duration = 4.0;
     pathAnimation.repeatCount = 1;
@@ -142,8 +163,8 @@
     pathAnimation.fromValue = [NSNumber numberWithFloat:0.0f];
     pathAnimation.toValue = [NSNumber numberWithFloat:1.0f];
     // 设置动画代理，动画结束时添加一个标签，显示折线终点的信息
-    //    pathAnimation.delegate = self;
-    [layer addAnimation:pathAnimation forKey:@"strokeEnd"];
+//    pathAnimation.delegate = self;
+    [_linesLayer addAnimation:pathAnimation forKey:@"strokeEnd"];
 }
 
 
