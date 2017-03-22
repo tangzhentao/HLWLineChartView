@@ -10,7 +10,6 @@
 		2444E4E21E827A260078E1FB /* LineChartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2444E4E11E827A260078E1FB /* LineChartViewController.m */; };
 		249B1DD21E793539007EED4E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 249B1DD11E793539007EED4E /* main.m */; };
 		249B1DD51E793539007EED4E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 249B1DD41E793539007EED4E /* AppDelegate.m */; };
-		249B1DD81E793539007EED4E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 249B1DD71E793539007EED4E /* ViewController.m */; };
 		249B1DDD1E793539007EED4E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 249B1DDC1E793539007EED4E /* Assets.xcassets */; };
 		249B1DE01E793539007EED4E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 249B1DDE1E793539007EED4E /* LaunchScreen.storyboard */; };
 		249B1DE91E793A61007EED4E /* HLWTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 249B1DE81E793A61007EED4E /* HLWTableViewController.m */; };
@@ -24,8 +23,6 @@
 		249B1DD11E793539007EED4E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		249B1DD31E793539007EED4E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		249B1DD41E793539007EED4E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		249B1DD61E793539007EED4E /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		249B1DD71E793539007EED4E /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		249B1DDC1E793539007EED4E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		249B1DDF1E793539007EED4E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		249B1DE11E793539007EED4E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -69,8 +66,6 @@
 				249B1DD41E793539007EED4E /* AppDelegate.m */,
 				249B1DE71E793A61007EED4E /* HLWTableViewController.h */,
 				249B1DE81E793A61007EED4E /* HLWTableViewController.m */,
-				249B1DD61E793539007EED4E /* ViewController.h */,
-				249B1DD71E793539007EED4E /* ViewController.m */,
 				2444E4E01E827A260078E1FB /* LineChartViewController.h */,
 				2444E4E11E827A260078E1FB /* LineChartViewController.m */,
 				249B1DEA1E793E9D007EED4E /* HLWLineChartView.h */,
@@ -162,7 +157,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				249B1DEC1E793E9D007EED4E /* HLWLineChartView.m in Sources */,
-				249B1DD81E793539007EED4E /* ViewController.m in Sources */,
 				249B1DE91E793A61007EED4E /* HLWTableViewController.m in Sources */,
 				249B1DD51E793539007EED4E /* AppDelegate.m in Sources */,
 				249B1DD21E793539007EED4E /* main.m in Sources */,
