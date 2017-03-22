@@ -7,11 +7,14 @@
 //
 
 #import "HLWTableViewController.h"
-#import "ViewController.h"
+#import "LineChartViewController.h"
 
 static NSString *cellIdentifier = @"UITableView";
 
 @interface HLWTableViewController ()
+
+@property (strong, nonatomic) NSMutableArray *dataArray;
+
 
 @end
 
@@ -20,10 +23,19 @@ static NSString *cellIdentifier = @"UITableView";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    _dataArray = [NSMutableArray array];
+    
+    [self setupData];
+    
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:cellIdentifier];
     self.tableView.tableFooterView = [UIView new];
 }
 
+- (void)setupData
+{
+    [_dataArray addObject:@"折线图"];
+    [_dataArray addObject:@"心型图"];
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -33,7 +45,7 @@ static NSString *cellIdentifier = @"UITableView";
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 3;
+    return _dataArray.count;
 }
 
 
@@ -41,14 +53,31 @@ static NSString *cellIdentifier = @"UITableView";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
 
     // Configure the cell...
+    cell.textLabel.text = _dataArray[indexPath.row];
     
     return cell;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ViewController *vc = [ViewController new];
+    LineChartViewController *vc = [LineChartViewController new];
+
+    if (0 == indexPath.row) {
+        NSMutableArray *points = [NSMutableArray array];
+        [points addObject:@{@"x" : @0, @"y" : @0}];
+        [points addObject:@{@"x" : @40, @"y" : @20}];
+        [points addObject:@{@"x" : @80, @"y" : @60}];
+        [points addObject:@{@"x" : @120, @"y" : @120}];
+        [points addObject:@{@"x" : @200, @"y" : @120}];
+        
+        vc.dataPoints = points;
+        
+    } else if (0 == indexPath.row) {
+    }
+    
     [self.navigationController pushViewController:vc animated:YES];
+
+    
 }
 
 /*

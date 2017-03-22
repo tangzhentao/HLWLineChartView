@@ -117,7 +117,7 @@
     
     _nodesLayer.lineWidth = 4;
     CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
-    pathAnimation.duration = 4.0;
+    pathAnimation.duration = 2.0;
     pathAnimation.repeatCount = 1;
     pathAnimation.removedOnCompletion = YES;
     pathAnimation.fromValue = [NSNumber numberWithFloat:0.0f];
@@ -157,7 +157,7 @@
     
     _linesLayer.lineWidth = 2;
     CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
-    pathAnimation.duration = 4.0;
+    pathAnimation.duration = 2.0;
     pathAnimation.repeatCount = 1;
     pathAnimation.removedOnCompletion = YES;
     pathAnimation.fromValue = [NSNumber numberWithFloat:0.0f];
